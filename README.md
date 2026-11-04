@@ -1,5 +1,7 @@
 # GlassyTab
 
+[![Validate GlassyTab](https://github.com/Hritik-Vashishth/GlassyTab/actions/workflows/validate.yml/badge.svg)](https://github.com/Hritik-Vashishth/GlassyTab/actions/workflows/validate.yml)
+
 A minimal Chrome new tab with your wallpaper, a glass search bar, and colors drawn from your image.
 
 **Version 0.4.2** · Manifest V3 · Plain JavaScript, HTML and CSS · No build step
@@ -132,9 +134,36 @@ Edit the HTML, CSS and JavaScript directly, then reload the extension in Chrome.
 | `theme-export.js` | Browser-theme manifest and ZIP generation. |
 | `wallpaper.png` | Bundled default wallpaper. |
 
-### Validation
+### Automated validation and test evidence
 
-JavaScript syntax, repeated upload/recovery behavior in a mocked DOM, generated theme ZIP integrity, and sample palette contrast have been checked during development. GitHub Actions also runs source/reference checks, screenshot-link validation, the mocked upload test, theme ZIP/CRC and color-contrast tests, and release-ZIP verification on pushes and pull requests. These automated checks do **not** install the extension in Chrome. The author has manually tried the extension, but an automated full-browser test matrix has not been completed.
+[![Validate GlassyTab](https://github.com/Hritik-Vashishth/GlassyTab/actions/workflows/validate.yml/badge.svg)](https://github.com/Hritik-Vashishth/GlassyTab/actions/workflows/validate.yml)
+
+**Verified November 4, 2026:** all **7 of 7** GitHub Actions workflow runs completed successfully, including the latest run on commit `69b3300`. This is a historical snapshot, not a promise that future runs will pass. The badge above reflects the latest workflow status.
+
+The `Validate GlassyTab` workflow runs on GitHub-hosted Ubuntu with Node.js 22 and Python 3, on pushes, pull requests, and manual dispatch. It performs:
+
+| Automated check | What it verifies |
+| --- | --- |
+| JavaScript syntax | `node --check` for `appearance.js`, `newtab.js`, `options.js`, `theme-export.js`, `check-upload.cjs`, and `check-project.cjs`. |
+| Upload regression | `node check-upload.cjs` exercises wallpaper upload and recovery logic in a mocked DOM. |
+| Project integrity | `node check-project.cjs` checks the manifest, referenced files, screenshot links, generated Chrome theme ZIP/CRC integrity, and sampled color contrast. |
+| Release packaging | `python3 package.py` creates `dist/GlassyTab.zip`; Python verifies ZIP integrity, required extension files, the `GlassyTab/` archive root, exclusion of screenshots, and Manifest V3 metadata. |
+
+**Execution history and logs:** each link opens a public GitHub Actions run where the job, individual steps, and available execution logs can be inspected. Logs are hosted by GitHub rather than copied into the repository.
+
+| Run | Result at verification | GitHub execution log |
+| --- | --- | --- |
+| #1 | Passed | [Run #1](https://github.com/Hritik-Vashishth/GlassyTab/actions/runs/41877563233) |
+| #2 | Passed | [Run #2](https://github.com/Hritik-Vashishth/GlassyTab/actions/runs/41877600072) |
+| #3 | Passed | [Run #3](https://github.com/Hritik-Vashishth/GlassyTab/actions/runs/41877621812) |
+| #4 | Passed | [Run #4](https://github.com/Hritik-Vashishth/GlassyTab/actions/runs/41877908452) |
+| #5 | Passed | [Run #5](https://github.com/Hritik-Vashishth/GlassyTab/actions/runs/41878735748) |
+| #6 | Passed | [Run #6](https://github.com/Hritik-Vashishth/GlassyTab/actions/runs/41878896552) |
+| #7 | Passed | [Run #7](https://github.com/Hritik-Vashishth/GlassyTab/actions/runs/41880182143) |
+
+See the [workflow configuration](.github/workflows/validate.yml) and [all Actions runs](https://github.com/Hritik-Vashishth/GlassyTab/actions) for current evidence.
+
+**Scope and limitations:** these checks execute real scripts but do **not** launch Chrome, install the extension, verify its visual appearance, or prove compatibility across all browsers and operating systems. The author has manually tried GlassyTab in desktop Chrome on macOS; a full automated browser test matrix and independent security audit have not been completed.
 
 For a manual smoke check: load the extension, upload two images consecutively, retry the same file, try an oversized file then a valid file, reopen a tab, adjust transparency, exercise suggestions, and install an exported browser theme.
 
