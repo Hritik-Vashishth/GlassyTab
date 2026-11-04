@@ -1,0 +1,52 @@
+name: Validate GlassyTab
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Check JavaScript syntax
+        run: |
+          for file in appearance.js newtab.js options.js theme-export.js check-upload.cjs check-project.cjs; do
+            node --check "$file"
+          done
+
+      - name: Run regression and integrity checks
+        run: |
+          node check-upload.cjs
+          node check-project.cjs
+
+      - name: Build and verify release ZIP
+        run: |
+          python3 package.py
+          python3 - <<'PY'
+          import json
+          from zipfile import ZipFile
+
+          with ZipFile("dist/GlassyTab.zip") as archive:
+              assert archive.testzip() is None, "Release ZIP is corrupted"
+              names = set(archive.namelist())
+              for name in ("manifest.json", "newtab.html", "newtab.js", "style.css",
+                           "appearance.js", "options.html", "options.js", "options.css",
+                           "theme-export.js", "wallpaper.png", "README.md", "PRIVACY.md"):
+                  assert "GlassyTab/" + name in names, f"Missing release file: {name}"
+              assert all(name.startswith("GlassyTab/") for name in names)
+              assert not any("screenshots/" in name for name in names)
+              manifest = json.loads(archive.read("GlassyTab/manifest.json"))
+              assert manifest["manifest_version"] == 3
+          print("PASS: distributable ZIP integrity and required extension files.")
+          PY
