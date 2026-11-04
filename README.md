@@ -134,7 +134,7 @@ Edit the HTML, CSS and JavaScript directly, then reload the extension in Chrome.
 
 ### Validation
 
-JavaScript syntax, repeated upload/recovery behavior in a mocked DOM, generated theme ZIP integrity, and sample palette contrast have been checked during development. The author has manually tried the extension. Automated full-browser installation testing has not been completed; this is an early release.
+JavaScript syntax, repeated upload/recovery behavior in a mocked DOM, generated theme ZIP integrity, and sample palette contrast have been checked during development. GitHub Actions also runs source/reference checks, screenshot-link validation, the mocked upload test, theme ZIP/CRC and color-contrast tests, and release-ZIP verification on pushes and pull requests. These automated checks do **not** install the extension in Chrome. The author has manually tried the extension, but an automated full-browser test matrix has not been completed.
 
 For a manual smoke check: load the extension, upload two images consecutively, retry the same file, try an oversized file then a valid file, reopen a tab, adjust transparency, exercise suggestions, and install an exported browser theme.
 
@@ -148,4 +148,4 @@ Source code is available under the [MIT License](LICENSE). The bundled wallpaper
 
 See [DEVELOPMENT.md](DEVELOPMENT.md) for implementation details, challenges, scripts used, compatibility limits and the release checklist.
 
-Run `node check-upload.cjs` for the mocked upload regression check. Run `python3 package.py` to build a clean extension ZIP in `dist/`. These are development tools; neither Node nor Python is needed to install GlassyTab.
+Run `node check-upload.cjs` for the mocked upload regression check and `node check-project.cjs` for manifest, file-reference, screenshot-link and theme-ZIP integrity checks. Run `python3 package.py` to build a clean extension ZIP in `dist/`. The same checks run automatically via [GitHub Actions](.github/workflows/validate.yml). These are development tools; neither Node nor Python is needed to install GlassyTab.
