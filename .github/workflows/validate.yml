@@ -3,6 +3,11 @@ name: Validate GlassyTab
 on:
   push:
   pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: glassytab-validate-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
