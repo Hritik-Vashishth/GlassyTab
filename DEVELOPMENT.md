@@ -4,7 +4,7 @@
 
 Plain JavaScript, HTML and CSS; Chrome Manifest V3. No framework, bundler, transpiler or paid API. `appearance.js` opens IndexedDB, decodes images and samples a 48 × 48 canvas to derive a palette. `options.js` validates uploads and manages settings. `newtab.js` debounces suggestion requests, cancels stale requests and handles keyboard selection. `theme-export.js` generates a theme manifest and an uncompressed ZIP with CRC32 checksums locally.
 
-Python's standard-library `zipfile` packages the release. Node's `--check` checks JavaScript syntax. Development regression checks used Node VM with mocked DOM/storage services for upload recovery, plus Python ZIP/JSON validation and contrast calculations for generated themes. These checks do not replace live Chrome testing.
+Python's standard-library `zipfile` packages the release. Node's `--check` checks JavaScript syntax. `check-upload.cjs` uses a Node VM with mocked DOM/storage services to test wallpaper-upload recovery. `check-project.cjs` independently validates the manifest, referenced HTML files, README screenshot paths, locally generated theme ZIP headers/CRC32, and sample contrast. [GitHub Actions](.github/workflows/validate.yml) runs those checks and verifies the packaged release ZIP on each push or pull request. These checks do not replace live Chrome testing.
 
 ## Challenges and decisions
 
@@ -20,7 +20,7 @@ Python's standard-library `zipfile` packages the release. Node's `--check` check
 
 Targets desktop Chrome with Manifest V3. No claim is made for every Chrome version, every Chromium-derived browser, mobile Chrome, or every OS. User testing reported the core workflow working; exact Chrome version and OS were not recorded. Browser rendering and unpacked theme installation still need a recorded version/OS test matrix before broad compatibility claims.
 
-Screenshots must be actual captures, with browser version, OS and capture date recorded. Do not substitute artwork or mockups for product screenshots.
+The five published screenshots are actual desktop Chrome captures on macOS dated November 4, 2026. The exact Chrome build was not recorded, so these images are not proof of compatibility across releases or operating systems. Future manual tests should record Chrome version, OS, date and observed result. Do not substitute artwork or mockups for product screenshots.
 
 ## Release checklist
 
