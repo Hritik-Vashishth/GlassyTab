@@ -4,6 +4,32 @@ A minimal Chrome new tab with your wallpaper, a glass search bar, and colors dra
 
 **Version 0.4.2** · Manifest V3 · Plain JavaScript, HTML and CSS · No build step
 
+## Screenshots
+
+Real screenshots of GlassyTab running in desktop Google Chrome on macOS (captured November 4, 2026). Appearance depends on the selected wallpaper, transparency and separately installed Chrome theme.
+
+### New tab · monochrome wallpaper
+
+![GlassyTab new tab with monochrome wallpaper and dark browser theme](screenshots/01-new-tab.png)
+
+### Appearance settings
+
+![GlassyTab appearance settings with wallpaper colors, fit modes and transparency](screenshots/02-appearance-settings.png)
+
+### Google search suggestions
+
+![GlassyTab search bar with Google autocomplete suggestions](screenshots/03-search-suggestions.png)
+
+### Wallpaper selection
+
+![GlassyTab wallpaper selection using the macOS file picker](screenshots/04-wallpaper-selection.png)
+
+### Custom wallpaper and matching browser theme
+
+![GlassyTab with a crimson and purple Sri Yantra wallpaper and matching Chrome browser colors](screenshots/05-custom-theme.png)
+
+> The browser toolbar theme is a separate installable Chrome theme exported by GlassyTab. The new-tab wallpaper and search interface belong to the extension itself.
+
 ## Features
 
 - Google search with suggestions and keyboard navigation.
