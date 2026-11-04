@@ -4,6 +4,8 @@
 
 - Renamed the project GlassyTab.
 - Expanded engineering, compatibility and release documentation.
+- Added five real product screenshots to the README.
+- Added automated source, screenshot-reference, theme-ZIP and packaging checks through `check-project.cjs` and GitHub Actions.
 
 
 ## 0.4.1
