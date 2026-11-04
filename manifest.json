@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "GlassyTab",
+  "version": "0.4.2",
+  "description": "Minimal wallpaper new tab with Google suggestions and adjustable glass.",
+  "chrome_url_overrides": {
+    "newtab": "newtab.html"
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "host_permissions": [
+    "https://suggestqueries.google.com/*"
+  ]
+}

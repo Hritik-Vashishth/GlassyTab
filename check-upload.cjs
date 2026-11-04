@@ -1,0 +1,11 @@
+process.chdir(__dirname);
+const vm=require('vm'),fs=require('fs'),assert=require('assert');
+const nodes=new Map();function node(){return {value:'',disabled:false,files:[],style:{},handlers:{},addEventListener(t,f){this.handlers[t]=f},replaceChildren(){},append(){}}}for(const id of ['fit','transparency','value','wallpaperFile','status','autoColors','swatches','exportTheme','browserPalette'])nodes.set(id,node());
+let renderCount=0,writes=0,validationFails=false,renderFails=false;
+const context={document:{getElementById:id=>nodes.get(id)||null,documentElement:{dataset:{fit:'stretch'},style:{getPropertyValue:()=>'.34'}},addEventListener(){},createElement:()=>node()},window:{wallpaperPalette:{base:[0,0,0],accent:[200,0,0]},addEventListener(){}},localStorage:{getItem:()=>null,setItem(){}},crypto:{randomUUID:()=>String(writes)},URL:{createObjectURL:()=> 'blob:test'},loadWallpaperImage:async()=>{if(validationFails)throw Error('Invalid image')},wallpaperData:async(a)=>{assert.equal(a,'put');writes++},applyAppearance:async()=>{renderCount++;if(renderFails)throw Error('Render failed')},matchingTheme:()=>({theme:{colors:{frame:[0,0,0],toolbar:[0,0,0],omnibox_background:[0,0,0]}}}),setTimeout,console};vm.createContext(context);vm.runInContext(fs.readFileSync('options.js','utf8'),context);
+(async()=>{const picker=nodes.get('wallpaperFile'),upload=picker.handlers.change;const image={size:10,type:'image/png'};
+for(let i=0;i<2;i++){picker.files=[image];await upload();assert.equal(picker.disabled,false);assert.equal(picker.value,'');}assert.equal(writes,2);assert.equal(renderCount,2);
+validationFails=true;await upload();assert.equal(picker.disabled,false);assert.equal(writes,2);validationFails=false;await upload();assert.equal(writes,3);
+renderFails=true;await upload();assert.equal(picker.disabled,false);renderFails=false;await upload();assert.equal(writes,5);assert(nodes.get('status').textContent.startsWith('Wallpaper saved'));
+assert(!fs.readFileSync('options.html','utf8').includes('resetWallpaper'));
+console.log('PASS: same-file repeated uploads, recovery after decode and rendering failures, picker re-enabled, restore control removed. DOM behavior tested with mocks; not live Chrome.');})().catch(e=>{console.error(e);process.exit(1)});
